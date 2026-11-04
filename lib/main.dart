@@ -28,7 +28,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     return MaterialApp.router(
       title: 'Citas Veterinaria',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.darkTheme,
+      theme: AppTheme.lightTheme, // 👈 CAMBIADO A TEMA CLARO
       routerConfig: router,
     );
   }

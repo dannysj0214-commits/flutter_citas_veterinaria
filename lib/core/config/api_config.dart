@@ -4,16 +4,15 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 class ApiConfig {
   /// URL base del backend, adaptada automáticamente a la plataforma:
   /// - Web (Chrome/Edge):  http://localhost:5000/api
-  /// - Android emulado:    http://10.0.2.2:5000/api
+  /// - Android (emulador o celular): http://192.168.101.15:5000/api
   /// - Windows/macOS/Linux: http://localhost:5000/api
-  /// - Celular físico:     cambia manualmente por tu IP local (ej: 192.168.1.10)
   static String get baseUrl {
     if (kIsWeb) {
       return 'http://localhost:5000/api';
     }
     if (Platform.isAndroid) {
-      // 10.0.2.2 es el alias que usa el emulador Android para "localhost" del PC
-      return 'http://10.0.2.2:5000/api';
+      // ⚠️ IP LOCAL DE TU PC (para celular físico y emulador)
+      return 'http://192.168.101.15:5000/api';
     }
     return 'http://localhost:5000/api';
   }
@@ -43,7 +42,7 @@ class ApiConfig {
   // Endpoints Admin
   static const String adminUsuarios = '/admin/usuarios';
 
-  // Timeouts
-  static const Duration connectTimeout = Duration(seconds: 15);
-  static const Duration receiveTimeout = Duration(seconds: 15);
+  // Timeouts (aumentados para evitar el error de conexión)
+  static const Duration connectTimeout = Duration(seconds: 30);
+  static const Duration receiveTimeout = Duration(seconds: 30);
 }

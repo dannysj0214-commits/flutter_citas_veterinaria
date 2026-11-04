@@ -25,6 +25,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.dispose();
   }
 
+  // 🌟 FUNCIÓN PARA AUTOCOMPLETAR CREDENCIALES
+  void _autocompletarCredenciales(String email, String password) {
+    setState(() {
+      _emailCtrl.text = email;
+      _passCtrl.text = password;
+    });
+  }
+
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -62,25 +70,37 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  // LOGO
                   Container(
-                    width: 120,
-                    height: 120,
-                    decoration: const BoxDecoration(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
                       color: AppColors.surface,
                       shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.accent.withValues(alpha: 0.2),
+                          blurRadius: 15,
+                          spreadRadius: 3,
+                        )
+                      ],
                     ),
                     child: const Icon(
                       Icons.pets,
-                      size: 60,
+                      size: 50,
                       color: AppColors.accent,
                     ),
                   ),
                   const SizedBox(height: 24),
+                  
+                  // TÍTULOS
                   const Text(
                     'VETERINARIA',
                     style: TextStyle(
-                      fontSize: 26,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                      letterSpacing: 2,
                     ),
                   ),
                   const Text(
@@ -96,9 +116,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 24),
+                  
+                  // CAMPOS
                   CustomTextField(
                     controller: _emailCtrl,
                     label: 'Email',
@@ -127,20 +150,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     },
                   ),
                   const SizedBox(height: 24),
+                  
+                  // ERROR
                   if (authState.error != null)
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: AppColors.error.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: AppColors.error),
                       ),
                       child: Row(
                         children: [
-                          const Icon(
-                            Icons.error_outline,
-                            color: AppColors.error,
-                            size: 20,
-                          ),
+                          const Icon(Icons.error_outline,
+                              color: AppColors.error, size: 20),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
@@ -152,19 +175,69 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                   if (authState.error != null) const SizedBox(height: 16),
+                  
+                  // BOTÓN
                   CustomButton(
                     text: 'INGRESAR',
                     isLoading: authState.isLoading,
                     onPressed: _submit,
                   ),
                   const SizedBox(height: 16),
+                  
+                  // LINK REGISTRO
                   TextButton(
                     onPressed: () => context.go('/register'),
                     child: const Text(
                       '¿No tienes cuenta? Regístrate',
-                      style: TextStyle(color: AppColors.textSecondary),
+                      style: TextStyle(color: AppColors.accent),
                     ),
                   ),
+
+                  // 🌟 CREDENCIALES DE PRUEBA
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Credenciales de prueba (Demo):',
+                    style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                  ),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      OutlinedButton.icon(
+                        onPressed: () => _autocompletarCredenciales('admin@vet.com', 'password123'),
+                        icon: const Icon(Icons.admin_panel_settings, size: 16),
+                        label: const Text('Admin'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.accent,
+                          side: BorderSide(color: AppColors.accent.withValues(alpha: 0.5)),
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        ),
+                      ),
+                      OutlinedButton.icon(
+                        onPressed: () => _autocompletarCredenciales('vet@vet.com', 'password123'),
+                        icon: const Icon(Icons.medical_services, size: 16),
+                        label: const Text('Profesional'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.success,
+                          side: BorderSide(color: AppColors.success.withValues(alpha: 0.5)),
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        ),
+                      ),
+                      OutlinedButton.icon(
+                        onPressed: () => _autocompletarCredenciales('Dannysj0214@gmail.com', '123456789'),
+                        icon: const Icon(Icons.person, size: 16),
+                        label: const Text('Cliente'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.warning,
+                          side: BorderSide(color: AppColors.warning.withValues(alpha: 0.5)),
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        ),
+                      ),
+                    ],
+                  ),
+                  
                   const SizedBox(height: 24),
                   const Text(
                     '© 2026 Universidad de Cartagena',

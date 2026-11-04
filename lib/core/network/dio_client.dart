@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import '../config/api_config.dart';
 import '../storage/secure_storage_service.dart';
 
 class DioClient {
@@ -12,9 +11,10 @@ class DioClient {
 
   Dio _createDio() {
     final dio = Dio(BaseOptions(
-      baseUrl: ApiConfig.baseUrl,
-      connectTimeout: ApiConfig.connectTimeout,
-      receiveTimeout: ApiConfig.receiveTimeout,
+      // 👇 IP FORZADA DIRECTAMENTE PARA EL CELULAR Y EMULADOR
+      baseUrl: 'http://192.168.101.16:5000/api',
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
       headers: {'Content-Type': 'application/json'},
     ));
 
@@ -26,21 +26,12 @@ class DioClient {
         }
         if (kDebugMode) {
           debugPrint('→ ${options.method} ${options.uri}');
-          debugPrint('  Body: ${options.data}');
         }
         handler.next(options);
-      },
-      onResponse: (response, handler) {
-        if (kDebugMode) {
-          debugPrint('← ${response.statusCode} ${response.requestOptions.uri}');
-          debugPrint('  Data: ${response.data}');
-        }
-        handler.next(response);
       },
       onError: (error, handler) async {
         if (kDebugMode) {
           debugPrint('✗ ${error.response?.statusCode} ${error.requestOptions.uri}');
-          debugPrint('  Error: ${error.response?.data}');
         }
         if (error.response?.statusCode == 401) {
           await SecureStorageService.clearAll();
