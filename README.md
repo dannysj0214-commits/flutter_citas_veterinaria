@@ -12,7 +12,7 @@ Aplicacion **Flutter** para la gestion de citas veterinarias y reportes de resca
 
 > **Backend en produccion:** `https://veterinaria-backend-s64b.onrender.com/api`
 >
-> **Visualizacion actual:** PC (Chrome/Edge/Windows). El APK Android esta en proceso de build.
+> **APK Android:** Generado y listo para instalacion.
 
 ---
 
@@ -26,6 +26,7 @@ Aplicacion **Flutter** para la gestion de citas veterinarias y reportes de resca
 - [Rutas de Navegacion](#-rutas-de-navegacion)
 - [Documentacion](#-documentacion)
 - [Como Ejecutar](#-como-ejecutar)
+- [Descargar APK](#-descargar-apk)
 - [Entregables del TCC](#-entregables-del-tcc)
 
 ---
@@ -77,34 +78,35 @@ App movil/escritorio desarrollada en **Flutter** que permite a los usuarios de u
 ---
 
 ## Estructura del Proyecto
+flutter_citas_veterinaria/
++-- lib/
+| +-- main.dart
+| +-- core/
+| | +-- config/api_config.dart
+| | +-- network/dio_client.dart
+| | +-- router/app_router.dart
+| | +-- storage/secure_storage_service.dart
+| | +-- theme/app_colors.dart + app_theme.dart
+| | +-- utils/
+| +-- features/
+| | +-- admin/
+| | +-- auth/
+| | +-- citas/
+| | +-- dashboard/
+| | +-- disponibilidad/
+| | +-- historias/
+| | +-- notificaciones/
+| | +-- perfil/
+| | +-- rescate/
+| | +-- servicios/
+| +-- shared/
+| +-- utils/
+| +-- widgets/
++-- assets/images/logo.png
++-- pubspec.yaml
++-- README.md
 
-    flutter_citas_veterinaria/
-    +-- lib/
-    |   +-- main.dart
-    |   +-- core/
-    |   |   +-- config/api_config.dart
-    |   |   +-- network/dio_client.dart
-    |   |   +-- router/app_router.dart
-    |   |   +-- storage/secure_storage_service.dart
-    |   |   +-- theme/app_colors.dart + app_theme.dart
-    |   |   +-- utils/
-    |   +-- features/
-    |   |   +-- admin/
-    |   |   +-- auth/
-    |   |   +-- citas/
-    |   |   +-- dashboard/
-    |   |   +-- disponibilidad/
-    |   |   +-- historias/
-    |   |   +-- notificaciones/
-    |   |   +-- perfil/
-    |   |   +-- rescate/
-    |   |   +-- servicios/
-    |   +-- shared/
-    |       +-- utils/
-    |       +-- widgets/
-    +-- assets/images/logo.png
-    +-- pubspec.yaml
-    +-- README.md
+text
 
 ---
 
@@ -194,14 +196,24 @@ La app se conecta automaticamente a `https://veterinaria-backend-s64b.onrender.c
 
 ---
 
+## Descargar APK
+
+El APK release ya esta generado. Puedes encontrarlo en la seccion **Releases** de este repositorio o en la siguiente ruta local:
+
+`build/app/outputs/flutter-apk/app-release.apk` (69.7 MB)
+
+> *(Si subes el APK a Releases, reemplaza esta linea con el enlace real).*
+
+---
+
 ## Entregables del TCC
 
 | # | Entregable | Estado |
 |---|---|---|
-| 1 | Codigo fuente documentado | OK |
+| 1 | Codigo fuente documentado y organizado | OK |
 | 2 | Instrucciones de configuracion y uso | OK |
-| 3 | APK generado y listo | En proceso |
-| 4 | Publicacion en Google Play (opcional) | Opcional |
+| 3 | APK generado y listo | OK (ver Releases) |
+| 4 | Publicacion en Google Play (opcional) | Documentado |
 | 5 | Presentacion del proyecto | OK |
 
 ---
