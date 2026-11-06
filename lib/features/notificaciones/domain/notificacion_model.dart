@@ -4,7 +4,7 @@ class NotificacionModel {
   final String titulo;
   final String mensaje;
   final bool leido;
-  final String? link; // 🌟 NUEVO CAMPO
+  final String? link;
   final DateTime? createdAt;
 
   NotificacionModel({
@@ -24,7 +24,7 @@ class NotificacionModel {
       titulo: json['titulo'] ?? '',
       mensaje: json['mensaje'] ?? '',
       leido: json['leido'] ?? false,
-      link: json['link'], // 🌟 NUEVO CAMPO
+      link: json['link'],
       createdAt: json['createdAt'] != null ? DateTime.tryParse(json['createdAt']) : null,
     );
   }

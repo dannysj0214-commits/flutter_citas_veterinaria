@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../data/estadisticas_api.dart';
-import '../domain/estadisticas_model.dart';
+import '../../data/estadisticas_api.dart';
+import '../../domain/estadisticas_model.dart';
 
 final estadisticasApiProvider = Provider((ref) => EstadisticasApi());
 

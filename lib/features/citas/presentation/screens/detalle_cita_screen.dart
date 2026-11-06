@@ -1,9 +1,9 @@
-import '../../../auth/presentation/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/widgets/custom_button.dart';
+import '../../../auth/presentation/providers/auth_provider.dart';
 import '../providers/citas_provider.dart';
 
 class DetalleCitaScreen extends ConsumerWidget {
@@ -13,23 +13,16 @@ class DetalleCitaScreen extends ConsumerWidget {
 
   Color _estadoColor(String estado) {
     switch (estado) {
-      case 'pendiente':
-        return AppColors.estadoPendiente;
-      case 'confirmada':
-        return AppColors.estadoConfirmada;
-      case 'completada':
-        return AppColors.estadoCompletada;
-      case 'cancelada':
-        return AppColors.estadoCancelada;
-      case 'rechazada':
-        return AppColors.estadoRechazada;
-      default:
-        return AppColors.textSecondary;
+      case 'pendiente': return AppColors.estadoPendiente;
+      case 'confirmada': return AppColors.estadoConfirmada;
+      case 'completada': return AppColors.estadoCompletada;
+      case 'cancelada': return AppColors.estadoCancelada;
+      case 'rechazada': return AppColors.estadoRechazada;
+      default: return AppColors.textSecondary;
     }
   }
 
-  Future<void> _cambiarEstado(
-      BuildContext context, WidgetRef ref, String nuevoEstado) async {
+  Future<void> _cambiarEstado(BuildContext context, WidgetRef ref, String nuevoEstado) async {
     try {
       final api = ref.read(citasApiProvider);
       await api.cambiarEstado(id, nuevoEstado);
@@ -37,20 +30,22 @@ class DetalleCitaScreen extends ConsumerWidget {
       ref.invalidate(citasProfesionalProvider);
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Cita marcada como $nuevoEstado'),
-            backgroundColor: AppColors.success,
-          ),
+          SnackBar(content: Text('Cita marcada como $nuevoEstado'), backgroundColor: AppColors.success),
         );
-        context.go('/cliente/citas');
+        
+        final user = ref.read(authProvider).user;
+        if (user?.rol == 'admin') {
+          context.go('/admin');
+        } else if (user?.rol == 'profesional') {
+          context.go('/profesional');
+        } else {
+          context.go('/cliente');
+        }
       }
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $e'),
-            backgroundColor: AppColors.error,
-          ),
+          SnackBar(content: Text('Error: $e'), backgroundColor: AppColors.error),
         );
       }
     }
@@ -61,22 +56,16 @@ class DetalleCitaScreen extends ConsumerWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: AppColors.surface,
-        title: const Text('¿Cancelar cita?',
-            style: TextStyle(color: AppColors.textPrimary)),
-        content: const Text(
-          'Esta acción no se puede deshacer.',
-          style: TextStyle(color: AppColors.textSecondary),
-        ),
+        title: const Text('¿Cancelar cita?', style: TextStyle(color: AppColors.textPrimary)),
+        content: const Text('Esta acción no se puede deshacer.', style: TextStyle(color: AppColors.textSecondary)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('No',
-                style: TextStyle(color: AppColors.textSecondary)),
+            child: const Text('No', style: TextStyle(color: AppColors.textSecondary)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Sí, cancelar',
-                style: TextStyle(color: AppColors.error)),
+            child: const Text('Sí, cancelar', style: TextStyle(color: AppColors.error)),
           ),
         ],
       ),
@@ -89,20 +78,14 @@ class DetalleCitaScreen extends ConsumerWidget {
         ref.invalidate(citasClienteProvider);
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Cita cancelada'),
-              backgroundColor: AppColors.success,
-            ),
+            const SnackBar(content: Text('Cita cancelada'), backgroundColor: AppColors.success),
           );
           context.go('/cliente/citas');
         }
       } catch (e) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error: $e'),
-              backgroundColor: AppColors.error,
-            ),
+            SnackBar(content: Text('Error: $e'), backgroundColor: AppColors.error),
           );
         }
       }
@@ -132,7 +115,15 @@ class DetalleCitaScreen extends ConsumerWidget {
         title: const Text('Detalle de Cita'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
+          onPressed: () {
+            if (user?.rol == 'admin') {
+              context.go('/admin');
+            } else if (user?.rol == 'profesional') {
+              context.go('/profesional');
+            } else {
+              context.go('/cliente');
+            }
+          },
         ),
       ),
       body: SingleChildScrollView(
@@ -145,27 +136,18 @@ class DetalleCitaScreen extends ConsumerWidget {
                 Expanded(
                   child: Text(
                     cita.motivo,
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
-                    ),
+                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                   ),
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
                     color: color.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
                     cita.estado.toUpperCase(),
-                    style: TextStyle(
-                      color: color,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.w600),
                   ),
                 ),
               ],
@@ -176,20 +158,12 @@ class DetalleCitaScreen extends ConsumerWidget {
             _seccion('Servicio', cita.servicio),
             if (cita.notas.isNotEmpty) _seccion('Notas', cita.notas),
             const SizedBox(height: 16),
-            if (cita.profesionalNombre.isNotEmpty)
-              _seccion('Profesional', 'Dr(a). ${cita.profesionalNombre}'),
-            if (cita.clienteNombre.isNotEmpty)
-              _seccion('Cliente', cita.clienteNombre),
+            if (cita.profesionalNombre.isNotEmpty) _seccion('Profesional', 'Dr(a). ${cita.profesionalNombre}'),
+            if (cita.clienteNombre.isNotEmpty) _seccion('Cliente', cita.clienteNombre),
             const SizedBox(height: 32),
+            
             if (esProfesional && cita.isPendiente) ...[
-              const Text(
-                'Acciones del profesional',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
-                ),
-              ),
+              const Text('Acciones del profesional', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
               const SizedBox(height: 12),
               CustomButton(
                 text: 'CONFIRMAR CITA',
@@ -226,22 +200,9 @@ class DetalleCitaScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            titulo,
-            style: const TextStyle(
-              fontSize: 12,
-              color: AppColors.textSecondary,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+          Text(titulo, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary, fontWeight: FontWeight.w500)),
           const SizedBox(height: 2),
-          Text(
-            valor,
-            style: const TextStyle(
-              fontSize: 15,
-              color: AppColors.textPrimary,
-            ),
-          ),
+          Text(valor, style: const TextStyle(fontSize: 15, color: AppColors.textPrimary)),
         ],
       ),
     );

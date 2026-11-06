@@ -1,0 +1,160 @@
+Listado de rutas de carpetas
+El n£mero de serie del volumen es A012-5EDB
+C:.
+|   estructura_lib.txt
+|   main.dart
+|   
++---core
+|   +---config
+|   |       api_config.dart
+|   |       
+|   +---network
+|   |       dio_client.dart
+|   |       
+|   +---router
+|   |       app_router.dart
+|   |       
+|   +---storage
+|   |       secure_storage_service.dart
+|   |       
+|   +---theme
+|   |       app_colors.dart
+|   |       app_theme.dart
+|   |       
+|   \---utils
++---features
+|   +---admin
+|   |   +---data
+|   |   |       admin_api.dart
+|   |   |       estadisticas_api.dart
+|   |   |       
+|   |   +---domain
+|   |   |       estadisticas_model.dart
+|   |   |       usuario_model.dart
+|   |   |       
+|   |   \---presentation
+|   |       |   admin_citas_screen.dart
+|   |       |   usuarios_list_screen.dart
+|   |       |   usuario_form_screen.dart
+|   |       |   
+|   |       \---providers
+|   |               admin_provider.dart
+|   |               estadisticas_provider.dart
+|   |               
+|   +---auth
+|   |   +---data
+|   |   |       auth_api.dart
+|   |   |       
+|   |   +---domain
+|   |   |       user_model.dart
+|   |   |       
+|   |   \---presentation
+|   |       |   login_screen.dart
+|   |       |   register_screen.dart
+|   |       |   welcome_screen.dart
+|   |       |   
+|   |       \---providers
+|   |               auth_provider.dart
+|   |               
+|   +---citas
+|   |   +---data
+|   |   |       citas_api.dart
+|   |   |       
+|   |   +---domain
+|   |   |       cita_model.dart
+|   |   |       
+|   |   \---presentation
+|   |       +---providers
+|   |       |       citas_provider.dart
+|   |       |       
+|   |       +---screens
+|   |       |       agendar_cita_screen.dart
+|   |       |       citas_profesional_screen.dart
+|   |       |       detalle_cita_screen.dart
+|   |       |       mis_citas_screen.dart
+|   |       |       
+|   |       \---widgets
+|   +---dashboard
+|   |   \---presentation
+|   |       |   admin_dashboard_screen.dart
+|   |       |   cliente_dashboard_screen.dart
+|   |       |   profesional_dashboard_screen.dart
+|   |       |   
+|   |       \---widgets
+|   |               dashboard_appbar.dart
+|   |               modern_action_card.dart
+|   |               quick_action_button.dart
+|   |               recent_report_card.dart
+|   |               
+|   +---disponibilidad
+|   |   +---data
+|   |   |       disponibilidad_api.dart
+|   |   |       
+|   |   +---domain
+|   |   |       disponibilidad_model.dart
+|   |   |       
+|   |   \---presentation
+|   |       |   horarios_screen.dart
+|   |       |   
+|   |       \---providers
+|   |               disponibilidad_provider.dart
+|   |               
+|   +---historias
+|   |   +---data
+|   |   |       historias_api.dart
+|   |   |       
+|   |   +---domain
+|   |   |       historia_model.dart
+|   |   |       
+|   |   \---presentation
+|   |       +---providers
+|   |       |       historias_provider.dart
+|   |       |       
+|   |       \---screens
+|   |               crear_historia_screen.dart
+|   |               mis_historias_screen.dart
+|   |               
+|   +---notificaciones
+|   |   +---data
+|   |   |       notificaciones_api.dart
+|   |   |       
+|   |   +---domain
+|   |   |       notificacion_model.dart
+|   |   |       
+|   |   \---presentation
+|   |       \---providers
+|   |               notificaciones_provider.dart
+|   |               
+|   +---perfil
+|   |   \---presentation
+|   +---rescate
+|   |   +---data
+|   |   |       categorias_rescate_api.dart
+|   |   |       reportes_rescate_api.dart
+|   |   |       
+|   |   +---domain
+|   |   |       categoria_rescate_model.dart
+|   |   |       reporte_rescate_model.dart
+|   |   |       
+|   |   \---presentation
+|   |       |   categorias_list_screen.dart
+|   |       |   categoria_form_screen.dart
+|   |       |   reportes_list_screen.dart
+|   |       |   reporte_detalle_screen.dart
+|   |       |   reporte_form_screen.dart
+|   |       |   
+|   |       +---providers
+|   |       |       rescate_provider.dart
+|   |       |       
+|   |       \---widgets
+|   \---servicios
+|       \---presentation
+|               servicios_screen.dart
+|               
+\---shared
+    +---utils
+    \---widgets
+            custom_button.dart
+            custom_textfield.dart
+            stat_card.dart
+            

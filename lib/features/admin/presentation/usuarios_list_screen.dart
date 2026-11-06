@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../shared/widgets/custom_button.dart';
-import '../providers/admin_provider.dart';
-import '../domain/usuario_model.dart';
+import 'providers/admin_provider.dart'; // 🌟 RUTA CORREGIDA
 
 class UsuariosListScreen extends ConsumerWidget {
   const UsuariosListScreen({super.key});
@@ -18,7 +16,7 @@ class UsuariosListScreen extends ConsumerWidget {
         title: const Text('Gestión de Usuarios'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/admin'),
+          onPressed: () => context.go('/admin'), // 🌟 Vuelve al panel admin
         ),
         actions: [
           IconButton(

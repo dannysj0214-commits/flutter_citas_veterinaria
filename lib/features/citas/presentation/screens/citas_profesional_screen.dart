@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../auth/presentation/providers/auth_provider.dart'; // 🌟 IMPORTANTE PARA SABER EL ROL
-import '../../domain/cita_model.dart';
+import '../../../auth/presentation/providers/auth_provider.dart';
 import '../providers/citas_provider.dart';
 
 class CitasProfesionalScreen extends ConsumerWidget {
@@ -31,7 +30,6 @@ class CitasProfesionalScreen extends ConsumerWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            // 🌟 Vuelve al panel correcto según el rol
             if (user?.rol == 'admin') {
               context.go('/admin');
             } else {

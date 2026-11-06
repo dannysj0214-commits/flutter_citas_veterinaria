@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/widgets/custom_button.dart';
 import '../../../../shared/widgets/custom_textfield.dart';
-import '../providers/admin_provider.dart';
+import 'providers/admin_provider.dart'; // 🌟 RUTA CORREGIDA
 
 class UsuarioFormScreen extends ConsumerStatefulWidget {
   const UsuarioFormScreen({super.key});

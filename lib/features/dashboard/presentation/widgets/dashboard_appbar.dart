@@ -5,6 +5,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../notificaciones/presentation/providers/notificaciones_provider.dart';
 import '../../../notificaciones/domain/notificacion_model.dart';
+import '../../../notificaciones/data/notificaciones_api.dart';
 
 class DashboardAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final String title;
@@ -110,7 +111,7 @@ class DashboardAppBar extends ConsumerWidget implements PreferredSizeWidget {
     );
   }
 
-  // 🌟 Ventana modal con la lista de notificaciones y link
+  // 🌟 Ventana modal con la lista de notificaciones
   void _mostrarNotificaciones(BuildContext context, WidgetRef ref, AsyncValue<List<NotificacionModel>> notifsAsync) {
     showModalBottomSheet(
       context: context,
@@ -118,7 +119,7 @@ class DashboardAppBar extends ConsumerWidget implements PreferredSizeWidget {
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (ctx) {
         return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.6,
+          height: MediaQuery.of(context).size.height * 0.7,
           child: Column(
             children: [
               Padding(
@@ -127,14 +128,36 @@ class DashboardAppBar extends ConsumerWidget implements PreferredSizeWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text('Notificaciones', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () => Navigator.pop(ctx),
+                    Row(
+                      children: [
+                        TextButton(
+                          onPressed: () async {
+                            final api = NotificacionesApi();
+                            await api.marcarTodasLeidas();
+                            
+                            // Refresca la lista y cierra el modal
+                            ref.invalidate(notificacionesProvider);
+                            if (ctx.mounted) Navigator.pop(ctx);
+                            
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Todas marcadas como leídas'), backgroundColor: AppColors.success),
+                              );
+                            }
+                          },
+                          child: const Text('Marcar todas', style: TextStyle(color: AppColors.accent, fontSize: 12)),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: () => Navigator.pop(ctx),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
               const Divider(height: 1),
+              
               Expanded(
                 child: notifsAsync.when(
                   loading: () => const Center(child: CircularProgressIndicator()),
@@ -158,21 +181,24 @@ class DashboardAppBar extends ConsumerWidget implements PreferredSizeWidget {
                       itemBuilder: (context, index) {
                         final n = notifs[index];
                         return ListTile(
-                          // 🌟 AL HACER CLIC, REDIRIGE AL REPORTE O AVISA
-                          onTap: () {
-                            Navigator.pop(context); // Cerramos el modal
+                          // 🌟 AL HACER CLIC: MARCAR COMO LEÍDA Y REDIRIGIR
+                          onTap: () async {
+                            final api = NotificacionesApi();
+                            await api.marcarLeida(n.id);
+                            
+                            if (ctx.mounted) Navigator.pop(ctx); // Cierra el modal
+                            
+                            // Redirige
                             if (n.link != null && n.link!.isNotEmpty) {
-                              // Si tiene link, va al detalle del reporte
-                              context.go('/reportes/${n.link}');
-                            } else {
-                              // Si NO tiene link, avisa al usuario
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Esta notificación no tiene un reporte asociado (generada antes de la actualización).'),
-                                  backgroundColor: AppColors.warning,
-                                ),
-                              );
+                              if (n.tipo == 'cita') {
+                                context.go('/citas/${n.link}');
+                              } else {
+                                context.go('/reportes/${n.link}');
+                              }
                             }
+                            
+                            // Refresca para actualizar el contador y quitar el punto
+                            ref.invalidate(notificacionesProvider);
                           },
                           leading: CircleAvatar(
                             backgroundColor: n.leido ? AppColors.surfaceLight : AppColors.accent.withValues(alpha: 0.2),

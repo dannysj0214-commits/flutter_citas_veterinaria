@@ -17,7 +17,8 @@ class WelcomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
-              // Logo
+              
+              // LOGO
               Container(
                 width: 150,
                 height: 150,
@@ -39,7 +40,8 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              // Título
+              
+              // TÍTULOS
               const Text(
                 'VETERINARIA',
                 style: TextStyle(
@@ -59,29 +61,56 @@ class WelcomeScreen extends StatelessWidget {
               
               const Spacer(),
               
-              // Botón Iniciar Sesión
+              // BOTONES
               CustomButton(
                 text: 'INICIAR SESIÓN',
                 onPressed: () => context.go('/login'),
               ),
               const SizedBox(height: 16),
-              
-              // Botón Registrarse
               CustomButton(
                 text: 'CREAR CUENTA',
                 outlined: true,
                 onPressed: () => context.go('/register'),
               ),
-              const SizedBox(height: 32),
               
-              // Pie de página
+              const SizedBox(height: 48),
+              
+              // 🌟 MARCA DE AGUA / AUTOR
               const Text(
-                '© 2026 Universidad de Cartagena',
+                'by',
                 style: TextStyle(
                   fontSize: 12,
+                  fontStyle: FontStyle.italic,
                   color: AppColors.textSecondary,
                 ),
               ),
+              const SizedBox(height: 4),
+              const Text(
+                'Ingeniero de Software',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textSecondary,
+                  letterSpacing: 1.2,
+                ),
+              ),
+              const Text(
+                'Dany José Salgado Guzmán',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.accent,
+                ),
+              ),
+              const Text(
+                'Universidad de Cartagena',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+              
+              const SizedBox(height: 16),
             ],
           ),
         ),

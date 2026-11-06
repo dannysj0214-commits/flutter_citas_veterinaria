@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../auth/presentation/providers/auth_provider.dart';
-import '../../admin/providers/estadisticas_provider.dart';
+import '../../admin/presentation/providers/estadisticas_provider.dart'; // 🌟 RUTA CORREGIDA
 import '../../rescate/presentation/providers/rescate_provider.dart';
 import '../../../shared/widgets/stat_card.dart';
 import 'widgets/dashboard_appbar.dart';
@@ -129,7 +129,7 @@ class AdminDashboardScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 24),
 
-              // 🌟 SECCIÓN DE ÚLTIMOS REPORTES DE RESCATE
+              // Últimos Reportes de Rescate
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

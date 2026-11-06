@@ -19,9 +19,10 @@ import '../../features/citas/presentation/screens/citas_profesional_screen.dart'
 import '../../features/disponibilidad/presentation/horarios_screen.dart';
 import '../../features/historias/presentation/screens/mis_historias_screen.dart';
 import '../../features/historias/presentation/screens/crear_historia_screen.dart';
-// 🌟 NUEVOS IMPORTS DEL ADMIN
+import '../../features/admin/presentation/admin_citas_screen.dart';
 import '../../features/admin/presentation/usuarios_list_screen.dart';
 import '../../features/admin/presentation/usuario_form_screen.dart';
+import '../../features/servicios/presentation/servicios_screen.dart'; // 🌟 NUEVO
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -52,11 +53,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       // ============ ADMIN ============
       GoRoute(path: '/admin', builder: (_, __) => const AdminDashboardScreen()),
       GoRoute(
-        path: '/admin/usuarios', // 🌟 NUEVA RUTA
+        path: '/admin/usuarios',
         builder: (_, __) => const UsuariosListScreen(),
       ),
       GoRoute(
-        path: '/admin/usuarios/nuevo', // 🌟 NUEVA RUTA
+        path: '/admin/usuarios/nuevo',
         builder: (_, __) => const UsuarioFormScreen(),
       ),
       GoRoute(
@@ -69,17 +70,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/admin/categorias/:id/editar',
-        builder: (_, state) => CategoriaFormScreen(
-          id: state.pathParameters['id'],
-        ),
+        builder: (_, state) => CategoriaFormScreen(id: state.pathParameters['id']),
       ),
       GoRoute(
         path: '/admin/reportes',
         builder: (_, __) => const ReportesListScreen(),
       ),
       GoRoute(
-        path: '/admin/citas', // 🌟 NUEVA RUTA (reutiliza la vista de citas del profesional)
-        builder: (_, __) => const CitasProfesionalScreen(),
+        path: '/admin/citas',
+        builder: (_, __) => const AdminCitasScreen(),
       ),
 
       // ============ PROFESIONAL ============
@@ -102,6 +101,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/profesional/historias/nueva',
         builder: (_, __) => const CrearHistoriaScreen(),
+      ),
+      GoRoute(
+        path: '/profesional/servicios', // 🌟 NUEVA RUTA
+        builder: (_, __) => const ServiciosScreen(),
       ),
 
       // ============ CLIENTE ============
@@ -131,25 +134,17 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/cliente/rescate/:id',
-        builder: (_, state) => ReporteDetalleScreen(
-          id: state.pathParameters['id']!,
-        ),
+        builder: (_, state) => ReporteDetalleScreen(id: state.pathParameters['id']!),
       ),
 
-      // ============ CITAS (compartido) ============
+      // ============ COMPARTIDO ============
       GoRoute(
         path: '/citas/:id',
-        builder: (_, state) => DetalleCitaScreen(
-          id: state.pathParameters['id']!,
-        ),
+        builder: (_, state) => DetalleCitaScreen(id: state.pathParameters['id']!),
       ),
-
-      // ============ REPORTES (compartido) ============
       GoRoute(
         path: '/reportes/:id',
-        builder: (_, state) => ReporteDetalleScreen(
-          id: state.pathParameters['id']!,
-        ),
+        builder: (_, state) => ReporteDetalleScreen(id: state.pathParameters['id']!),
       ),
     ],
   );

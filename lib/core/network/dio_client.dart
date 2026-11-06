@@ -11,8 +11,7 @@ class DioClient {
 
   Dio _createDio() {
     final dio = Dio(BaseOptions(
-      // 👇 IP FORZADA DIRECTAMENTE PARA EL CELULAR Y EMULADOR
-      baseUrl: 'http://192.168.101.16:5000/api',
+      baseUrl: 'https://veterinaria-backend-s64b.onrender.com/api', // 🌟 SOLO UNA VEZ
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
       headers: {'Content-Type': 'application/json'},

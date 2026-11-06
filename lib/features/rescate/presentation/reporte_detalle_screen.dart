@@ -3,8 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../auth/presentation/providers/auth_provider.dart'; // 🌟 Para saber el rol
-import '../domain/reporte_rescate_model.dart';
+import '../../auth/presentation/providers/auth_provider.dart';
 import 'providers/rescate_provider.dart';
 
 class ReporteDetalleScreen extends ConsumerStatefulWidget {
@@ -51,12 +50,10 @@ class _ReporteDetalleScreenState extends ConsumerState<ReporteDetalleScreen> {
     }
   }
 
-  // 🌟 NUEVO: Cambiar estado del reporte
   Future<void> _cambiarEstado(String nuevoEstado) async {
     setState(() => _cambiandoEstado = true);
     try {
       final api = ref.read(reportesRescateApiProvider);
-      // Asumiendo que tienes un método para actualizar en la API
       await api.actualizar(widget.id, {'estado': nuevoEstado}); 
       ref.invalidate(reporteDetalleProvider(widget.id));
       ref.invalidate(reportesRescateProvider);
@@ -90,7 +87,6 @@ class _ReporteDetalleScreenState extends ConsumerState<ReporteDetalleScreen> {
   Widget build(BuildContext context) {
     final reporteAsync = ref.watch(reporteDetalleProvider(widget.id));
     final user = ref.watch(authProvider).user;
-    final esAdminOProfesional = user?.rol == 'admin' || user?.rol == 'profesional';
 
     return Scaffold(
       appBar: AppBar(
@@ -106,12 +102,18 @@ class _ReporteDetalleScreenState extends ConsumerState<ReporteDetalleScreen> {
         data: (reporte) {
           final estadoColor = _estadoColor(reporte.estado);
           
+          // 🌟 LÓGICA DE PERMISOS
+          final esAdmin = user?.rol == 'admin';
+          final esProfesional = user?.rol == 'profesional';
+          final esDuenio = reporte.idUsuarioString == user?.id; // Comparación correcta
+          final puedeCambiarEstado = esAdmin || esProfesional || esDuenio;
+
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 🌟 ENCABEZADO
+                // ENCABEZADO
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
@@ -167,8 +169,8 @@ class _ReporteDetalleScreenState extends ConsumerState<ReporteDetalleScreen> {
                 ),
                 const SizedBox(height: 20),
 
-                // 🌟 CAMBIAR ESTADO (Solo Admin/Profesional)
-                if (esAdminOProfesional) ...[
+                // CAMBIAR ESTADO (Solo Admin, Profesional o Dueño)
+                if (puedeCambiarEstado) ...[
                   const Text('Gestión del Caso', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                   const SizedBox(height: 8),
                   Container(
@@ -194,7 +196,7 @@ class _ReporteDetalleScreenState extends ConsumerState<ReporteDetalleScreen> {
                   const SizedBox(height: 20),
                 ],
 
-                // 🌟 INFO MASCOTA
+                // INFO MASCOTA
                 const Text('Información de la Mascota', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                 const SizedBox(height: 8),
                 _infoCard([
@@ -205,7 +207,7 @@ class _ReporteDetalleScreenState extends ConsumerState<ReporteDetalleScreen> {
                 ]),
                 const SizedBox(height: 20),
 
-                // 🌟 CONTACTO
+                // CONTACTO
                 const Text('Información de Contacto', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                 const SizedBox(height: 8),
                 _infoCard([
@@ -214,7 +216,7 @@ class _ReporteDetalleScreenState extends ConsumerState<ReporteDetalleScreen> {
                   if (reporte.contactoEmail.isNotEmpty) _filaInfo('Email', reporte.contactoEmail),
                 ]),
                 
-                // 🌟 BOTONES DE CONTACTO DIRECTO
+                // BOTONES DE CONTACTO DIRECTO
                 const SizedBox(height: 12),
                 Row(
                   children: [
@@ -291,7 +293,7 @@ class _ReporteDetalleScreenState extends ConsumerState<ReporteDetalleScreen> {
                 ),
                 const SizedBox(height: 24),
 
-                // 🌟 SEGUIMIENTOS
+                // SEGUIMIENTOS
                 const Text('Seguimientos del Caso', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                 const SizedBox(height: 8),
                 if (reporte.seguimientos.isEmpty)
@@ -329,7 +331,7 @@ class _ReporteDetalleScreenState extends ConsumerState<ReporteDetalleScreen> {
                       )),
                 const SizedBox(height: 16),
 
-                // 🌟 AGREGAR SEGUIMIENTO
+                // AGREGAR SEGUIMIENTO
                 Row(
                   children: [
                     Expanded(

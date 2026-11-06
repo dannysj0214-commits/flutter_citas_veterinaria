@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../domain/cita_model.dart';
 import '../providers/citas_provider.dart';
 
 class MisCitasScreen extends ConsumerWidget {
@@ -28,7 +27,7 @@ class MisCitasScreen extends ConsumerWidget {
         title: const Text('Mis Citas'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/cliente'), // 🌟 Vuelve al panel cliente
+          onPressed: () => context.go('/cliente'),
         ),
         actions: [
           IconButton(

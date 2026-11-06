@@ -2,7 +2,7 @@ class ReporteRescate {
   final String id;
   final String titulo;
   final String descripcion;
-  final dynamic categoria;
+  final dynamic categoria; // puede ser String o Map
   final String especie;
   final String raza;
   final String colorPelaje;
@@ -15,7 +15,7 @@ class ReporteRescate {
   final String contactoNombre;
   final String contactoTelefono;
   final String contactoEmail;
-  final dynamic idUsuario;
+  final dynamic idUsuario; // puede ser String o Map
   final List<Seguimiento> seguimientos;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -65,15 +65,12 @@ class ReporteRescate {
       seguimientos: (json['seguimientos'] as List? ?? [])
           .map((s) => Seguimiento.fromJson(s))
           .toList(),
-      createdAt: json['createdAt'] != null
-          ? DateTime.tryParse(json['createdAt'])
-          : null,
-      updatedAt: json['updatedAt'] != null
-          ? DateTime.tryParse(json['updatedAt'])
-          : null,
+      createdAt: json['createdAt'] != null ? DateTime.tryParse(json['createdAt']) : null,
+      updatedAt: json['updatedAt'] != null ? DateTime.tryParse(json['updatedAt']) : null,
     );
   }
 
+  // Helpers para UI
   String get categoriaNombre {
     if (categoria is Map) return categoria['nombre'] ?? '';
     return '';
@@ -90,33 +87,17 @@ class ReporteRescate {
     return '';
   }
 
+  // 🌟 NUEVO HELPER: Para saber quién es el dueño del reporte
+  String get idUsuarioString {
+    if (idUsuario is String) return idUsuario;
+    if (idUsuario is Map) return idUsuario['_id']?.toString() ?? '';
+    return '';
+  }
+
   String get usuarioNombre {
     if (idUsuario is Map) return idUsuario['nombre'] ?? '';
     return '';
   }
-
-  String get usuarioTelefono {
-    if (idUsuario is Map) return idUsuario['telefono'] ?? '';
-    return '';
-  }
-
-  Map<String, dynamic> toJson() => {
-        'titulo': titulo,
-        'descripcion': descripcion,
-        'categoria': categoriaId,
-        'especie': especie,
-        'raza': raza,
-        'color_pelaje': colorPelaje,
-        'tamanio': tamanio,
-        'ubicacion': ubicacion,
-        'latitud': latitud,
-        'longitud': longitud,
-        'fotos': fotos,
-        'estado': estado,
-        'contacto_nombre': contactoNombre,
-        'contacto_telefono': contactoTelefono,
-        'contacto_email': contactoEmail,
-      };
 }
 
 class Seguimiento {
